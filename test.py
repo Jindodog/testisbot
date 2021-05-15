@@ -1,4 +1,4 @@
-import discord
+import discord, os
 from discord.ext import commands
 from youtube_dl import YoutubeDL
 import time
@@ -18,6 +18,10 @@ async def on_ready():
     print(bot.user.name)
     print('connection was succesful')
     await bot.change_presence(status=discord.Status.online, activity=None)
+    
+    if not discord.opus.is_loaded():
+        discord.opus.load_opus('opus')
+        
 
 # 노래 대기열 관련 배열
 user = []
@@ -92,6 +96,19 @@ def play_next(ctx):
     else:
         if not vc.is_playing():
             client.loop.create_task(vc.disconnect())
+            
+            
+def load_chrome_driver():
+      
+    options = webdriver.ChromeOptions()
+
+    options.binary_location = os.getenv('GOOGLE_CHROME_BIN')
+
+    options.add_argument('--headless')
+    # options.add_argument('--disable-gpu')
+    options.add_argument('--no-sandbox')
+
+    return webdriver.Chrome(executable_path=str(os.environ.get('CHROME_EXECUTABLE_PATH')), chrome_options=options)
 #
 
 
@@ -275,7 +292,7 @@ async def 즐겨찾기추가(ctx, *, msg):
             options = webdriver.ChromeOptions()
             options.add_argument("headless")
 
-            chromedriver_dir = r"E:\WR\1_PROJECT\3_Programming_Project\chromedriver_win32\chromedriver.exe"
+            driver = load_chrome_driver()
             driver = webdriver.Chrome(chromedriver_dir, options = options)
             driver.get("https://www.youtube.com/results?search_query="+msg+"+lyrics")
             source = driver.page_source
@@ -364,7 +381,7 @@ async def 재생(ctx, *, msg):
         YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
         FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
             
-        chromedriver_dir = r"E:\WR\1_PROJECT\3_Programming_Project\chromedriver_win32\chromedriver.exe"
+        driver = load_chrome_driver()
         driver = webdriver.Chrome(chromedriver_dir, options = options)
         driver.get("https://www.youtube.com/results?search_query="+msg+"+lyrics")
         source = driver.page_source
@@ -400,7 +417,7 @@ async def 멜론차트(ctx):
         YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
         FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
             
-        chromedriver_dir = r"E:\WR\1_PROJECT\3_Programming_Project\chromedriver_win32\chromedriver.exe"
+        driver = load_chrome_driver()
         driver = webdriver.Chrome(chromedriver_dir, options = options)
         driver.get("https://www.youtube.com/results?search_query=멜론차트")
         source = driver.page_source
