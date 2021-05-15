@@ -47,7 +47,6 @@ def title(msg):
     options.add_argument("headless")
 
     driver = load_chrome_driver()
-    driver = webdriver.Chrome(chromedriver_dir, options = options)
     driver.get("https://www.youtube.com/results?search_query="+msg+"+lyrics")
     source = driver.page_source
     bs = bs4.BeautifulSoup(source, 'lxml')
@@ -293,7 +292,6 @@ async def 즐겨찾기추가(ctx, *, msg):
             options.add_argument("headless")
 
             driver = load_chrome_driver()
-            driver = webdriver.Chrome(chromedriver_dir, options = options)
             driver.get("https://www.youtube.com/results?search_query="+msg+"+lyrics")
             source = driver.page_source
             bs = bs4.BeautifulSoup(source, 'lxml')
@@ -382,7 +380,6 @@ async def 재생(ctx, *, msg):
         FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
             
         driver = load_chrome_driver()
-        driver = webdriver.Chrome(chromedriver_dir, options = options)
         driver.get("https://www.youtube.com/results?search_query="+msg+"+lyrics")
         source = driver.page_source
         bs = bs4.BeautifulSoup(source, 'lxml')
@@ -408,6 +405,15 @@ async def 재생(ctx, *, msg):
 
 @bot.command()
 async def 멜론차트(ctx):
+    try:
+        global vc
+        vc = await ctx.message.author.voice.channel.connect()
+    except:
+        try:
+            await vc.move_to(ctx.message.author.voice.channel)
+        except:
+            await ctx.send("채널에 유저가 없음")
+            
     if not vc.is_playing():
         
         options = webdriver.ChromeOptions()
@@ -418,7 +424,6 @@ async def 멜론차트(ctx):
         FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
             
         driver = load_chrome_driver()
-        driver = webdriver.Chrome(chromedriver_dir, options = options)
         driver.get("https://www.youtube.com/results?search_query=멜론차트")
         source = driver.page_source
         bs = bs4.BeautifulSoup(source, 'lxml')
