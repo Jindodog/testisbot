@@ -46,7 +46,7 @@ def title(msg):
     options = webdriver.ChromeOptions()
     options.add_argument("headless")
 
-    chromedriver_dir = r"E:\WR\1_PROJECT\3_Programming_Project\chromedriver_win32\chromedriver.exe"
+    driver = load_chrome_driver()
     driver = webdriver.Chrome(chromedriver_dir, options = options)
     driver.get("https://www.youtube.com/results?search_query="+msg+"+lyrics")
     source = driver.page_source
