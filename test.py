@@ -450,4 +450,4 @@ async def 노래끄기(ctx):
         await ctx.send("지금 노래가 재생되지 않네요.")
 
 
-bot.run('ODEwMjg2MTY5MjYyNzg0NTUz.YChbzQ.xQAGHuEkEotsa8UIyx9tmxtsiG8')
+bot.run(os.environ['token'])
